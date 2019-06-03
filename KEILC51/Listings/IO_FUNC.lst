@@ -1,0 +1,72 @@
+C51 COMPILER V9.54   IO_FUNC                                                               01/07/2019 09:54:23 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE IO_FUNC
+OBJECT MODULE PLACED IN .\Objects\IO_FUNC.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE Hardware\IO_FUNC\IO_FUNC.C OPTIMIZE(8,SPEED) BROWSE INCDIR(.\USER;.\STAR
+                    -T;.\Hardware\IO_FUNC;.\Hardware\USART;.\Hardware\TIM) DEBUG OBJECTEXTEND PRINT(.\Listings\IO_FUNC.lst) TABS(2) OBJECT(.\
+                    -Objects\IO_FUNC.obj)
+
+line level    source
+
+   1          #include "IO_FUNC.h"
+   2          
+   3          /***********************************************************************************************
+   4          *函数名 ： void IO_init(void)
+   5          *函数功能描述 ： 初始化所有IO口为准双向模式
+   6          *函数返回值 ： void
+   7          *作者 ：WangR
+   8          *函数创建日期 ： 20190106
+   9          *函数修改日期 ： --
+  10          *修改人 ：--
+  11          *修改原因 ： --
+  12          *版本 ： 1.0
+  13          *历史版本 ： --
+  14          ***********************************************************************************************/
+  15          void IO_init(void)
+  16          {
+  17   1          P0M0 = 0x00;
+  18   1          P0M1 = 0x00;
+  19   1          P1M0 = 0x00;
+  20   1          P1M1 = 0x00;
+  21   1          P2M0 = 0x00;
+  22   1          P2M1 = 0x00;
+  23   1          P3M0 = 0x00;
+  24   1          P3M1 = 0x00;
+  25   1          P4M0 = 0x00;
+  26   1          P4M1 = 0x00;
+  27   1          P5M0 = 0x00;
+  28   1          P5M1 = 0x00;
+  29   1          P6M0 = 0x00;
+  30   1          P6M1 = 0x00;
+  31   1          P7M0 = 0x00;
+  32   1          P7M1 = 0x00;
+  33   1      }
+  34          /***********************************************************************************************
+  35          *函数名 ： void IO_init(void)
+  36          *函数功能描述 ： 初始化所有IO口为准双向模式
+  37          *函数返回值 ： void
+  38          *作者 ：WangR
+  39          *函数创建日期 ： 20190106
+  40          *函数修改日期 ： --
+  41          *修改人 ：--
+  42          *修改原因 ： --
+  43          *版本 ： 1.0
+  44          *历史版本 ： --
+  45          ***********************************************************************************************/
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     34    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+C51 COMPILER V9.54   IO_FUNC                                                               01/07/2019 09:54:23 PAGE 2   
+
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

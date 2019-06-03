@@ -1,0 +1,349 @@
+C51 COMPILER V9.54   MAIN                                                                  01/07/2019 09:57:35 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE USER\main.c OPTIMIZE(8,SPEED) BROWSE INCDIR(.\USER;.\START;.\Hardware\IO
+                    -_FUNC;.\Hardware\USART;.\Hardware\TIM) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "main.h"
+   2          
+   3          int main(void)
+   4          {
+   5   1        sys_para cur_syspara,old_syspara;
+   6   1        memset(&cur_syspara,0,sizeof(cur_syspara));
+   7   1        memset(&old_syspara,0,sizeof(old_syspara)); //
+   8   1        memset(Rec_Buff,0,sizeof(Rec_Buff)); //接收输出赋予初值
+   9   1        IO_init();
+  10   1        MasterUsart_Init(115200);//主机串口初始化
+  11   1        SlaverUsart_Init(115200);//从机串口初始化
+  12   1        /***需要确认初始值来开机初始化同时修改 old_syspara 的值**/
+  13   1        IRQ_ENABLE; //开启全局中断
+  14   1        PDD = 0;
+  15   1        PDC = 0;  
+  16   1        PDB = 0;  
+  17   1        PDA = 0;  
+  18   1        while(1)
+  19   1        {
+  20   2          if(Rec_Finish == True)  //接收完成
+  21   2          {
+  22   3            if(Rec_Buff[0] == 0xa5 && Rec_Buff[1] == 0xa5
+  23   3                && Rec_Buff[6] == 0x5a && Rec_Buff[7] == 0x5a) //检测报头报尾
+  24   3            {//解析
+  25   4              cur_syspara.ST  =  Rec_Buff[3] >> 7;
+  26   4              cur_syspara.sss = (Rec_Buff[3] >> 5) & 0x03;
+  27   4              cur_syspara.PSA = (Rec_Buff[3] >> 4) & 0x01;
+  28   4              cur_syspara.CS = Rec_Buff[3] & 0x03; 
+  29   4              cur_syspara.AA = Rec_Buff[4] & 0x07;
+  30   4              cur_syspara.FS = (Rec_Buff[4] & 0x0f) << 8 | Rec_Buff[5];
+  31   4              cur_syspara.PD = Rec_Buff[5] & 0x0f;
+  32   4            }
+  33   3            //根据解析值设置
+  34   3            if(cur_syspara.ST != old_syspara.ST)
+  35   3            {
+  36   4              ST = (cur_syspara.ST > 0) ? 1 : 0;
+  37   4              STY = ~ST;
+  38   4              old_syspara.ST = cur_syspara.ST;
+  39   4            }
+  40   3            if(cur_syspara.sss != old_syspara.sss)
+  41   3            {
+  42   4              SSS0 = ((cur_syspara.sss & 0x01) > 0) ? 1 : 0;
+  43   4              SSS1 = ((cur_syspara.sss & 0x02) > 0) ? 1 : 0;
+  44   4              old_syspara.sss = cur_syspara.sss;
+  45   4            }
+  46   3            if(cur_syspara.PSA != old_syspara.PSA)
+  47   3            {
+  48   4              PSA = (cur_syspara.PSA > 0) ? 1 : 0;
+  49   4              old_syspara.PSA = cur_syspara.PSA;
+  50   4            }
+  51   3            if(cur_syspara.CS != old_syspara.CS)
+  52   3            {
+  53   4              CS0 = ((cur_syspara.CS & 0x01) > 0) ? 1 : 0;
+  54   4              CS1 = ((cur_syspara.CS & 0x02) > 0) ? 1 : 0;        
+C51 COMPILER V9.54   MAIN                                                                  01/07/2019 09:57:35 PAGE 2   
+
+  55   4              old_syspara.CS = cur_syspara.CS;
+  56   4            }
+  57   3            if(cur_syspara.AA != old_syspara.AA)
+  58   3            {
+  59   4      //        AA0 = ((cur_syspara.CS & 0x01) > 0) ? 1 : 0;
+  60   4      //        AA1 = ((cur_syspara.CS & 0x02) > 0) ? 1 : 0;  
+  61   4      //        AA2 = ((cur_syspara.CS & 0x02) > 0) ? 1 : 0;  
+  62   4                  if(cur_syspara.AA * 5 == 0)
+  63   4                  {
+  64   5                    A1_0_5dB  = 1;
+  65   5                    A1_1dB = 1;
+  66   5                    A1_2dB = 1;
+  67   5                    A1_4dB = 1;
+  68   5                    A1_8dB = 1;
+  69   5                    A1_16dB = 1;
+  70   5                    A1_15dB = 1;
+  71   5                    A2_0_5dB = 1;
+  72   5                    A2_1dB = 1;
+  73   5                    A2_2dB = 1;
+  74   5                    A2_4dB = 1;
+  75   5                    A2_8dB = 1;
+  76   5                    A2_16dB = 1;
+  77   5                    A2_15dB = 1;
+  78   5                  }
+  79   4                  else if(cur_syspara.AA * 5 == 5)
+  80   4                  {
+  81   5                    A1_0_5dB  = 1;
+  82   5                    A1_1dB = 0;
+  83   5                    A1_2dB = 1;
+  84   5                    A1_4dB = 0;
+  85   5                    A1_8dB = 1;
+  86   5                    A1_16dB = 1;
+  87   5                    A1_15dB = 1;
+  88   5                    A2_0_5dB = 1;
+  89   5                    A2_1dB = 0;
+  90   5                    A2_2dB = 1;
+  91   5                    A2_4dB = 0;
+  92   5                    A2_8dB = 1;
+  93   5                    A2_16dB = 1;
+  94   5                    A2_15dB = 1;
+  95   5                  }
+  96   4                  else if(cur_syspara.AA * 5 == 15)
+  97   4                  {
+  98   5                    A1_0_5dB  = 1;
+  99   5                    A1_1dB = 0;
+ 100   5                    A1_2dB = 0;
+ 101   5                    A1_4dB = 0;
+ 102   5                    A1_8dB = 0;
+ 103   5                    A1_16dB = 1;
+ 104   5                    A1_15dB = 1;
+ 105   5                    A2_0_5dB = 1;
+ 106   5                    A2_1dB = 0;
+ 107   5                    A2_2dB = 0;
+ 108   5                    A2_4dB = 0;
+ 109   5                    A2_8dB = 0;
+ 110   5                    A2_16dB = 1;
+ 111   5                    A2_15dB = 1;
+ 112   5                  }
+ 113   4                  else if(cur_syspara.AA * 5 == 20)
+ 114   4                  {
+ 115   5                    A1_0_5dB  = 1;
+ 116   5                    A1_1dB = 1;
+C51 COMPILER V9.54   MAIN                                                                  01/07/2019 09:57:35 PAGE 3   
+
+ 117   5                    A1_2dB = 1;
+ 118   5                    A1_4dB = 0;
+ 119   5                    A1_8dB = 1;
+ 120   5                    A1_16dB = 0;
+ 121   5                    A1_15dB = 1;
+ 122   5                    A2_0_5dB = 1;
+ 123   5                    A2_1dB = 1;
+ 124   5                    A2_2dB = 1;
+ 125   5                    A2_4dB = 0;
+ 126   5                    A2_8dB = 1;
+ 127   5                    A2_16dB = 0;
+ 128   5                    A2_15dB = 1;
+ 129   5                  }
+ 130   4                  else if(cur_syspara.AA * 5 == 25)
+ 131   4                  {
+ 132   5                    A1_0_5dB  = 1;
+ 133   5                    A1_1dB = 0;
+ 134   5                    A1_2dB = 1;
+ 135   5                    A1_4dB = 1;
+ 136   5                    A1_8dB = 0;
+ 137   5                    A1_16dB = 0;
+ 138   5                    A1_15dB = 1;
+ 139   5                    A2_0_5dB = 1;
+ 140   5                    A2_1dB = 0;
+ 141   5                    A2_2dB = 1;
+ 142   5                    A2_4dB = 1;
+ 143   5                    A2_8dB = 1;
+ 144   5                    A2_16dB = 0;
+ 145   5                    A2_15dB = 1;
+ 146   5                  }
+ 147   4                  else if(cur_syspara.AA * 5 == 30)
+ 148   4                  {
+ 149   5                    A1_0_5dB  = 1;
+ 150   5                    A1_1dB = 1;
+ 151   5                    A1_2dB = 0;
+ 152   5                    A1_4dB = 0;
+ 153   5                    A1_8dB = 0;
+ 154   5                    A1_16dB = 0;
+ 155   5                    A1_15dB = 1;
+ 156   5                    A2_0_5dB = 1;
+ 157   5                    A2_1dB = 1;
+ 158   5                    A2_2dB = 0;
+ 159   5                    A2_4dB = 0;
+ 160   5                    A2_8dB = 0;
+ 161   5                    A2_16dB = 0;
+ 162   5                    A2_15dB = 1;        
+ 163   5                  }
+ 164   4                  else
+ 165   4                  {
+ 166   5                    A1_0_5dB  = 1;
+ 167   5                    A1_1dB = 0;
+ 168   5                    A1_2dB = 0;
+ 169   5                    A1_4dB = 0;
+ 170   5                    A1_8dB = 0;
+ 171   5                    A1_16dB = 1;
+ 172   5                    A1_15dB = 0;
+ 173   5                    A2_0_5dB = 1;
+ 174   5                    A2_1dB = 0;
+ 175   5                    A2_2dB = 0;
+ 176   5                    A2_4dB = 0;
+ 177   5                    A2_8dB = 0;
+ 178   5                    A2_16dB = 1;
+C51 COMPILER V9.54   MAIN                                                                  01/07/2019 09:57:35 PAGE 4   
+
+ 179   5                    A2_15dB = 0;    
+ 180   5                  }
+ 181   4                      
+ 182   4              
+ 183   4              A4_5dB = ((cur_syspara.AA & 0x01) > 0) ? 1 : 0;
+ 184   4              A4_10dB = ((cur_syspara.AA & 0x02) > 0) ? 1 : 0;        
+ 185   4              A4_15dB = ((cur_syspara.AA & 0x04) > 0) ? 1 : 0;
+ 186   4              A3_5dB = A4_5dB;
+ 187   4              A3_10dB = A4_10dB;
+ 188   4              A3_15dB = A4_15dB;
+ 189   4              old_syspara.AA = cur_syspara.AA;
+ 190   4            }
+ 191   3            if(cur_syspara.FS != old_syspara.FS)
+ 192   3            {
+ 193   4              if((cur_syspara.FS * 5 + 380) >= 380 && (cur_syspara.FS * 5 + 380) <= 470)
+ 194   4              {
+ 195   5                S1Y = 1; // 需要修改
+ 196   5                S1N = 0;
+ 197   5                
+ 198   5                S2Y1 = 1;
+ 199   5                S2N1 = 1;
+ 200   5                S2Y2 = 1;
+ 201   5                S2N2 = 1;
+ 202   5              }
+ 203   4              else if((cur_syspara.FS * 5 + 380) > 470 && (cur_syspara.FS * 5 + 380)  <= 700)
+ 204   4              {
+ 205   5                S1Y = 1; // 需要修改
+ 206   5                S1N = 0; //
+ 207   5                
+ 208   5                S2Y1 = 1;
+ 209   5                S2N1 = 1;
+ 210   5                S2Y2 = 1;
+ 211   5                S2N2 = 1;
+ 212   5              }
+ 213   4              else if((cur_syspara.FS * 5 + 380) > 700 && (cur_syspara.FS * 5 + 380)  <= 1100)
+ 214   4              {
+ 215   5                S2Y1 = 1;
+ 216   5                S2N1 = 0;
+ 217   5                S2Y2 = 0;
+ 218   5                S2N2 = 0;
+ 219   5              }
+ 220   4              else if((cur_syspara.FS * 5 + 380) > 1100 && (cur_syspara.FS * 5 + 380)  <= 1500)
+ 221   4              {
+ 222   5                S2Y1 = 0;
+ 223   5                S2N1 = 1;
+ 224   5                S2Y2 = 0;
+ 225   5                S2N2 = 1;       
+ 226   5              }
+ 227   4              else if((cur_syspara.FS * 5 + 380) > 1500 && (cur_syspara.FS * 5 + 380)  <= 2000)
+ 228   4              {
+ 229   5                S2Y1 = 0;
+ 230   5                S2N1 = 0;
+ 231   5                S2Y2 = 1;
+ 232   5                S2N2 = 0;       
+ 233   5              }
+ 234   4              else if((cur_syspara.FS * 5 + 380) > 2000 && (cur_syspara.FS * 5 + 380)  <= 2750)
+ 235   4              {
+ 236   5                S3Y = 0;
+ 237   5                S3N = 0;
+ 238   5                S2Y1 = 1;
+ 239   5                S2N1 = 1;
+ 240   5                S2Y2 = 1;
+C51 COMPILER V9.54   MAIN                                                                  01/07/2019 09:57:35 PAGE 5   
+
+ 241   5                S2N2 = 1;
+ 242   5              }
+ 243   4              else if((cur_syspara.FS * 5 + 380) > 2750 && (cur_syspara.FS * 5 + 380) <= 3250)
+ 244   4              {
+ 245   5                S3Y = 0;
+ 246   5                S3N = 1;
+ 247   5                S2Y1 = 1;
+ 248   5                S2N1 = 1;
+ 249   5                S2Y2 = 1;
+ 250   5                S2N2 = 1;
+ 251   5              }
+ 252   4              else if((cur_syspara.FS * 5 + 380) > 3250 && (cur_syspara.FS * 5 + 380) <= 4000)
+ 253   4              {
+ 254   5                S3Y = 1;
+ 255   5                S3N = 0;
+ 256   5                S2Y1 = 1;
+ 257   5                S2N1 = 1;
+ 258   5                S2Y2 = 1;
+ 259   5                S2N2 = 1;
+ 260   5              }   
+ 261   4              else if((cur_syspara.FS * 5 + 380) > 4000 && (cur_syspara.FS * 5 + 380) <= 6000)
+ 262   4              {
+ 263   5                S3Y = 1;
+ 264   5                S3N = 1;
+ 265   5                S2Y1 = 1;
+ 266   5                S2N1 = 1;
+ 267   5                S2Y2 = 1;
+ 268   5                S2N2 = 1;
+ 269   5              }     
+ 270   4              else if((cur_syspara.FS * 5 + 380) > 6000 && (cur_syspara.FS * 5 + 380) <= 9750)
+ 271   4              {
+ 272   5                S4_1 = 0;
+ 273   5                S4_2 = 1;
+ 274   5                S4_3 = 1;
+ 275   5                S2Y1 = 1;
+ 276   5                S2N1 = 1;
+ 277   5                S2Y2 = 1;
+ 278   5                S2N2 = 1;
+ 279   5              }   
+ 280   4              else if((cur_syspara.FS * 5 + 380) > 9750 && (cur_syspara.FS * 5 + 380) <= 12000)
+ 281   4              {
+ 282   5                S4_1 = 1;
+ 283   5                S4_2 = 1;
+ 284   5                S4_3 = 0;
+ 285   5                S2Y1 = 1;
+ 286   5                S2N1 = 1;
+ 287   5                S2Y2 = 1;
+ 288   5                S2N2 = 1;
+ 289   5              }   
+ 290   4              else if((cur_syspara.FS * 5 + 380) > 12000 && (cur_syspara.FS * 5 + 380) <= 18000)
+ 291   4              {
+ 292   5                S4_1 = 1;
+ 293   5                S4_2 = 0;
+ 294   5                S4_3 = 1;
+ 295   5                S2Y1 = 1;
+ 296   5                S2N1 = 1;
+ 297   5                S2Y2 = 1;
+ 298   5                S2N2 = 1;
+ 299   5              }         
+ 300   4              old_syspara.FS = cur_syspara.FS;
+ 301   4            }
+ 302   3            if(cur_syspara.PD != old_syspara.PD)
+C51 COMPILER V9.54   MAIN                                                                  01/07/2019 09:57:35 PAGE 6   
+
+ 303   3            {
+ 304   4              PDD = ((cur_syspara.PD & 0x01) > 0) ? 1 : 0;
+ 305   4              PDC = ((cur_syspara.PD & 0x02) > 0) ? 1 : 0;  
+ 306   4              PDB = ((cur_syspara.PD & 0x04) > 0) ? 1 : 0;  
+ 307   4              PDA = ((cur_syspara.PD & 0x08) > 0) ? 1 : 0;  
+ 308   4              old_syspara.PD = cur_syspara.PD;
+ 309   4            }
+ 310   3            memset(&cur_syspara,0,sizeof(cur_syspara));
+ 311   3            memset(Rec_Buff,0,sizeof(Rec_Buff)); 
+ 312   3            Rec_Finish = ~Rec_Finish;
+ 313   3          }
+ 314   2        }
+ 315   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1036    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     10      16
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
