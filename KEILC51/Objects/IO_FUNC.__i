@@ -1,0 +1,1 @@
+"Hardware\IO_FUNC\IO_FUNC.C" OPTIMIZE (8,SPEED) BROWSE INCDIR(.\USER;.\START;.\Hardware\IO_FUNC;.\Hardware\USART;.\Hardware\TIM) DEBUG OBJECTEXTEND PRINT(.\Listings\IO_FUNC.lst) TABS (2) OBJECT(.\Objects\IO_FUNC.obj)

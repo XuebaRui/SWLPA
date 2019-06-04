@@ -18,12 +18,14 @@ Hex Converter:   OH51.exe V2.7.0.0
 CPU DLL:         S8051.DLL V3.100.0.0
 Dialog DLL:      DP51.DLL V2.62.0.1 
 <h2>Project:</h2>
-F:\work\Project\李业\李业\KEILC51\MASTER_CTL.uvproj
-Project File Date:  01/06/2019
+F:\work\Project\开关低噪放（唐陈）\SWLPA\KEILC51\MASTER_CTL.uvproj
+Project File Date:  06/03/2019
 
 <h2>Output:</h2>
 Build target 'MASTER_CTL'
+compiling IO_FUNC.C...
 compiling main.c...
+compiling Interrupt.c...
 linking...
 *** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
     SYMBOL:  REC_FINISH
@@ -37,10 +39,12 @@ linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_MASTERUSART_SENDBYTE?USART
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SLAVERUSART_INIT?USART
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_SLAVERUSART_SENDBYTE?USART
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_TIMCNT_INIT?TIM
-Program Size: data=47.2 xdata=0 code=2056
+Program Size: data=41.2 xdata=0 code=1229
 Target not created.
 </pre>
 </body>

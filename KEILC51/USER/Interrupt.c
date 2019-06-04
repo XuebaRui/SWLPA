@@ -30,21 +30,11 @@ void Uart() interrupt 4   //串口接收解码
 				
 					Rec_Buff[Rec_Len] = SBUF;
 					Rec_Len ++; 
-					if(Rec_Len == 8)
+					if(Rec_Len == 4)
 					{
-						if(Rec_Buff[0] == 0xa5 && Rec_Buff[0] == 0x5a)
-						{
 							Rec_Len = 0;
 							Rec_Finish = True;
 							IE2 &= ~0x20;   //关定时器3中断
-						}
-						else
-						{
-							memset(Rec_Buff , 0 , sizeof(Rec_Buff));
-							Rec_Len = 0;
-							Rec_Finish = False;
-							IE2 &= ~0x20;   //关定时器3中断
-						}
 					}
 				}
         RI = 0;                 //清除RI位

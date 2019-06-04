@@ -1,4 +1,4 @@
-C51 COMPILER V9.54   USART                                                                 01/07/2019 09:54:22 PAGE 1   
+C51 COMPILER V9.54   USART                                                                 06/03/2019 17:18:54 PAGE 1   
 
 
 C51 COMPILER V9.54, COMPILATION OF MODULE USART
@@ -62,7 +62,7 @@ line level    source
   51          void MasterUsart_SendByte(u8 byte)
   52          {
   53   1          while (usart1_busy);               //等待前面的数据发送完成
-C51 COMPILER V9.54   USART                                                                 01/07/2019 09:54:22 PAGE 2   
+C51 COMPILER V9.54   USART                                                                 06/03/2019 17:18:54 PAGE 2   
 
   54   1          ACC = byte;                  //获取校验位P (PSW.0)
   55   1          if (P)                      //根据P来设置校验位
@@ -126,7 +126,7 @@ line level    source
  113          *作者 ：WangR
  114          *函数创建日期 ： 20190106
  115          *函数修改日期 ： --
-C51 COMPILER V9.54   USART                                                                 01/07/2019 09:54:22 PAGE 3   
+C51 COMPILER V9.54   USART                                                                 06/03/2019 17:18:54 PAGE 3   
 
  116          *修改人 ：--
  117          *修改原因 ： --

@@ -23,7 +23,7 @@ typedef struct
 }sys_para;
 /*********************End*************************/
 /********************Extern***********************/
-u8 Rec_Buff[8];
+u8 Rec_Buff[4];
 u8 Rec_Len = 0;
 u8 Rec_Finish = True;
 
